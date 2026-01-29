@@ -1,0 +1,38 @@
+{
+  "level": "9",
+  "cols": 9,
+  "rows": 9,
+  "peopleQueues": [
+    [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
+    [1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0],
+    [2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1],
+    [3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2],
+    [4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3]
+  ],
+  "shapesLines": [
+    { "shapeName": "5Cube_Cross",             "shapeColor": 0 },
+    { "shapeName": "4Cube_SideL_FlipVerHor",  "shapeColor": 1 },
+    { "shapeName": "3CubeHor",                "shapeColor": 2 },
+
+    { "shapeName": "5Cube_HoleLeft",          "shapeColor": 3 },
+    { "shapeName": "4Cube_Climb_hor_Left",    "shapeColor": 4 },
+    { "shapeName": "3SmallL_Flip_Ver",        "shapeColor": 0 },
+
+    { "shapeName": "5Cube_CubeWPointDown",    "shapeColor": 1 },
+    { "shapeName": "4Cube_LShape",            "shapeColor": 2 },
+    { "shapeName": "5Cube_HoleUp",            "shapeColor": 3 },
+
+    { "shapeName": "5Cube_LongVer",           "shapeColor": 4 },
+    { "shapeName": "4Cube_long_ver",          "shapeColor": 0 },
+    { "shapeName": "5Cube_T",                 "shapeColor": 1 },
+
+    { "shapeName": "3SmallL",                 "shapeColor": 2 },
+    { "shapeName": "5Cube_HoleRight",         "shapeColor": 3 },
+    { "shapeName": "5Cube_CubeWPointUp",      "shapeColor": 4 }
+  ],
+  "shapes_1_2": false,
+  "shapes_3": true,
+  "shapes_4": true,
+  "shapes_5": true,
+  "randomSeed": 90
+}

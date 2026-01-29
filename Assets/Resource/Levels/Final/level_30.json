@@ -1,0 +1,38 @@
+{
+      "level": "Hard1",
+      "cols": 8,
+      "rows": 8,
+      "peopleQueues": [
+        // 3 queues, color range 0..3 (4 colors)
+        // each queue ~10 people
+        [0,0,3,1,2,2,3,3],
+        [1,0,2,2,1,3,0,0],
+        [2,2,3,0,0,0,1,1],
+		[2,1,0,0,2,0,3,3]
+      ],
+      "shapesLines": [
+        // 15 total shapes, ~3 are 5-cube
+        // Start with a couple of 5-cube shapes
+        { "shapeName": "5Cube_CubeWPointUp", "shapeColor": 0 },
+        { "shapeName": "4Cube_SideL",        "shapeColor": 1 },
+        { "shapeName": "4Cube_Cube",          "shapeColor": 2 },
+		
+        { "shapeName": "4Cube_Climb_hor_Left",            "shapeColor": 3 },
+        { "shapeName": "5Cube_4_1_R",            "shapeColor": 0 },
+        { "shapeName": "5Cube_CubeWPointRight",            "shapeColor": 1 },
+		
+        { "shapeName": "4Cube_LShape",        "shapeColor": 2 },
+        { "shapeName": "3SmallL",             "shapeColor": 3 },
+        { "shapeName": "5Cube_Cross",            "shapeColor": 0 },
+		
+        { "shapeName": "4Cube_Climb_ver_Left",            "shapeColor": 1 },
+        { "shapeName": "4Cube_SideL",         "shapeColor": 2 },
+        { "shapeName": "5Cube_HoleRight",            "shapeColor": 3 }
+      ],
+      // All random shapes can be 1–5 cubes
+      "shapes_1_2": false,
+      "shapes_3": true,
+      "shapes_4": true,
+      "shapes_5": true,
+      "randomSeed": 9001
+    }

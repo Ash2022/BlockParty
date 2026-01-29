@@ -1,0 +1,63 @@
+{
+  "cols": 4,
+  "rows": 5,
+  "peopleQueues": [
+    [
+      0
+    ],
+    [
+      1
+    ],
+    [
+      2
+    ]
+  ],
+  "shapesLines": [
+    {
+      "ShapeName": "SingleCube",
+      "ShapeColor": 0
+    },
+    {
+      "ShapeName": "SingleCube",
+      "ShapeColor": 1
+    },
+    {
+      "ShapeName": "SingleCube",
+      "ShapeColor": 2
+    }
+  ],
+  "randomSeed": 1234,
+  "tutorial": true,
+  "board": [
+    [
+      -1,
+      -1,
+      -1,
+      -1
+    ],
+    [
+      -1,
+      0,
+      0,
+      -1
+    ],
+    [
+      -1,
+      1,
+      1,
+      -1
+    ],
+    [
+      -1,
+      2,
+      2,
+      -1
+    ],
+    [
+      -1,
+      -1,
+      -1,
+      -1
+    ]
+  ]
+}

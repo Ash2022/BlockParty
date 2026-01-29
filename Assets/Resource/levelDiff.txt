@@ -1,0 +1,314 @@
+
+
+L1 - trivial (1)  - 2 colors - 3*3
+
+L4 - easy (2-3) - 2 colors - 4*3
+
+L2 - trivial (1) - 2 colors - 4*4
+
+L3 - easy (2-3) - 2 colors - 4*4
+	
+L5 - easy - 2 colors - 4*4 
+
+L14 - easy - 2 colors - 5*4
+
+L10 - easy - 2 colors - 5*5
+
+L21 - easy - med - 2 colors - 5*4
+
+L16 - easy-med - 2 colors - 5*5  -- Medium Level
+
+L11 - easy  - 3 colors - 5*5 - unlock 3 colors      XXXXXXXXXXXXXXXXXXXX       --------------------------10
+
+L7 - med - 3 colors - 4*5
+
+L6 - easy -  - 3 colors - 4*4 - make easier
+
+L9 - easy-med - 3 colors - 5*4
+
+L8 - med - 3 colors - 5*4
+
+L15 - easy - mix 14,15,16 in other places - 2 colors - 5*5
+
+L17 - easy - med - 3 colors - 6*6
+
+L22 - easy - med - 3 colors - 5*5
+
+L32 (m1) - easy - 3 colors - 6*5
+
+L19 - med - 3 colors - 5*5       ------Medium Level 
+
+L24 - easy - med - 4 colors - 6*4 --- unlock 4 colors -------------XXXXXXXXXXXXXXXXXXX----------------------------20
+
+L23 - easy - med - 3 colors - 5*5
+
+L12 - easy and  very fun - 3 colors - maybe make the first 3 colors level - 7*7
+
+L27 - easy - med - 3 colors - 6*6
+
+L37 (m6 - easy - 4 colors - 7*7
+	
+L33 (m2) - easy-med - 3 colors - 7*5
+
+L42 (h1) - easy-med  - 4 colors - 7*7  
+
+L20 - med - 3 colors - 9*9 - very good combos
+
+L35 (m4) - easy-med - 4 colors - 7*6
+
+L36 (m5) - med - hard - 3 colors - 6*7 ----------- hard level - make to 19 or 29 
+
+L29 - mix the colors in the queus - easy - 5 colors - 7*7 -- XXXXXXXXXXXXXXXXXXXXXXXXXXXXX unlocks 5 colors ----------30
+
+L25 - easy - med - 4 colors - 6*5 
+
+L34 (m3) - easy - 3 colors 6*6    
+
+L18 - med - 4 colors - 6*6
+
+L28 - med - 4 colors - 7*6
+
+L26 - med - 5 colors - 6*6
+
+L38 (m7)- med - hard - 4 colors - 7*6  ----- Medium-Hard
+
+L13 - easy - med - 3 colors - 7*7
+
+L40 (m9) - easy - med - 4 colors - 7*7
+
+L39 (m8)- med - 4 colors - 8*8
+
+L47 (h6) -  hard - 4 colors - 8*8	------ HARD ----------------------------- 40
+
+L44 (h3) - med+ - 4 colors - 8*7
+
+L31 - easy - 3 colors - 7*7
+
+L30 - med - 4 colors - 8*8
+
+L43 (h2) - med-hard - 4 colors - 8*7
+
+L41 (m10)- very hard - 5 colors - 7*7              ------- HARD
+
+L45 (h4) - easy-med - 3 colors - 7*7
+
+L46 (h5) - med - 4 colors - 9*7
+
+L48 (h7) - med - hard - 4 colors - 9*8
+
+L49 (h8) - med - 4 colors - 8*9
+
+L50 (h9) - very hard - 5 colors - 9*9                -------- HARD          ---------- 50
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+fix grid squere colliders - DONE
+add some combo saying how many you cleared if its over 4-5 - DONE
+try to see why sometimes on big combo some of the queue people move from bottom up and not from the queue
+its easy to see in level 18
+maybe make situation levels?
+make the explosions speed up when removing squares from the grid - DONE
+
+
+
+there is some code redudency - when exploding the squares
+
+end screen unlocks
+
+
+tutorial
+
+
+-215 -850 --------> 85 -190
+
+
+videos
+
+
+
+Missions:
+
+
+Make level enter animation - DONE
+
+Grid fades in
+Queues fade in one after the other - people pop one by one
+shapes fill at the bottom one after the other
+
+
+Make other combo, no words - DONE
+
+Scoring - DONE 
+
+Ask gpt to detect biggest line --- DONE 
+
+Take everything out to utils - DONE 
+
+Find canvas mask or plugin/shader - DONE
+
+Make level fade out at end screen - DONE
+
+Make the shapes kids of something else so they are over boxes  - DONE
+
+
+
+Tutorial multi stage:   -------- DONE
+	goal of the game is not explained
+	behavior of the queue is not explained
+	so my friend was just playing by looking at available pieces and board space
+	losing condition is not explained
+
+Hole in the end screen bg bottom - DONE
+
+feeding algorithm
+still many situations where I have yellow and blue in queue but I'm fed green   ---- DONE
+
+should go for the longest line possible (and this should be explained)  - DONE
+
+ 
+ UI
+queue is too high so I have to look very up and very down to play  --- DONE 
+
+yummy, etc. are not very suited for this game - replace with combo? cf Stick Blast  - DONE
+
+additional: add basic point system to give sense of progression - DONE
+
+try to complete line with people assist before checking line completion - DONE 
+
+
+Change the machine gun sfx at level ends  -- DONE
+
+Make the auto chains at level ends  -- DONE
+Maybe little more wow in the fade out animation 
+
+level progression   -- DONE
+levels with a lot of auto complete (for instance level 6) are not fun
+ - all the more since there is no explanation that the queue can empty themselves on their own
+
+
+
+
+overall
+remove UI
+add "hand" that shows input
+add more hesitation (hand will help with that) to give time to think about what's happening
+make it bigger and more interesting
+videos
+2: good but not clear that I start by taking the blue piece from the feed
+7: gameplay is not clear and then everything happens too fast
+9: with hesitation, it can be good
+10: same as 7
+additional comments: make it more juicy and interesting!!
+zoom in
+levels with many colors and big board sizes would be way more impressive and with potential for longer 
+and more intense scenarios - no problem to go big here and exaggerate a lot!!
+
+
+
+
+
+ Hey,
+ i am starting on the new tutorial with your feedback in mind.
+ about this "still happens to be fed green and blue when board is empty and only yellow available in the queue = peak frustration"
+ can you tell me which level it happened - i cant seem to make it happen - and i thought i put some preventaions for such case.
+ 
+
+Now i understand the change you want - its a second to implement but i want to make sure we understand the remifications:
+
+levels now have a few initial shapes that are defined, both shape and color - after a few shapes it gets new
+shapes randomly, these were checked against the entire queue for colors - now they will check only for queue head.
+
+i dont think we need to do it for the initial shapes - if you take tutorial level 1 - there is only green at the 
+top of the queue - we dont want to have 3 green shapes.
+
+what do you think?
+
+
+
+OK, i fixed all the mentioned levels - it was very simple to fix them - just remove some of predefined shapes.
+I changed the queue head to look on queue head and one above it for random colors
+changed the tutorial to say the text we picked.
+i played the levels (14,17, 22, 33,34) before and after the change it improves them big time.
+also - enabled the debug button - to quickly get to whatever level you want 
+
+
+
+level indication 320  ----- used to be 400
+
+shapes holder = -700
+shapes inside = 375
+
+
+
+0.615 ---- 0.58
+
+0.11 ---- 0.08
+
+0.475 ----0.43
+
+0.01 ---- 0.06
+
+0.5 ---- 0.46
+
+
+
+levels to record:2 7 9 10
+
+Video 2 ---- Level 19  -- DONE   ---- VIDEO 0
+
+Video 7 ---- Level 31  --- DONE  ---- VIDEO 1
+
+Video 9 ---- Level 5  --- DONE  ---- VIDEO 2
+
+Video 10 --- Level 32 ---- VIDEO 3   ----- GOOD 
+
+Video New --- Level 27 ---- VIDEO 4  ----- GOOD 
+
+
+Video 0 - Level 20 
+
+Video 1 - Level 22
+
+Video 2 - Level 21
+
+
+
+3 and 5 are good
+more hesitation
+pieces can be placed back in the storage
+show only levels of 6*6 or more
+
+Check reset of combo size - DONE
+See the animation 2 defects, one is the white box animation - DONE 
+And second is tiles usually 5 6 comes from bottom - DONE 
+Level 20 good to see the big and has many predefined, remove some
+Go over all levels for predefined
+Once done change it completely 
+
+
+
+
+level index to change 
+
+7 - make a little harder
+
+8 - start shapes 
+12 - start shapes - queue
+14 - add color - start shapes - queue mix
+15 - start shapes - queue mix
+17 - add to queue and mix 
+
+22 - ad color mix queue - change start shapes
+

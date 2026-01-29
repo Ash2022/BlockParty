@@ -1,0 +1,323 @@
+{
+  "level": "9",
+  "cols": 8,
+  "rows": 7,
+  "peopleQueues": [
+    [0, 1, 2, 1, 0, 1, 2, 1],
+    [1, 0, 2, 0, 1, 0, 2, 0],
+    [2, 1, 0, 2, 1, 2, 0, 2],
+    [1, 2, 1, 0, 2, 1, 0, 1],
+    [0, 1, 2, 1, 0, 1, 2, 1],
+    [1, 0, 2, 0, 1, 0, 2, 0],
+    [2, 1, 0, 2, 1, 2, 0, 2]
+  ],
+  "shapesLines": [
+    {
+      "shapeName": "1Cube",
+      "shapeColor": 0
+    },
+    {
+      "shapeName": "2CubeHor",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "2CubeVer",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "3CubeLine",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "3CubeL",
+      "shapeColor": 0
+    },
+    {
+      "shapeName": "4CubeSquare",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "4CubeTShape",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "4CubeLShape",
+      "shapeColor": 0
+    },
+    {
+      "shapeName": "5CubeCross",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "4Cube_Climb_hor_Right",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "5CubeLongHor",
+      "shapeColor": 3
+    },
+    {
+      "shapeName": "5CubeLShape",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "5CubeSquare",
+      "shapeColor": 4
+    },
+    {
+      "shapeName": "5CubeDiamond",
+      "shapeColor": 3
+    },
+    {
+      "shapeName": "5CubeLongVer",
+      "shapeColor": 4
+    },
+    {
+      "shapeName": "5CubeZShape",
+      "shapeColor": 5
+    },
+    {
+      "shapeName": "5CubeHexagon",
+      "shapeColor": 5
+    },
+    {
+      "shapeName": "6CubeStar",
+      "shapeColor": 4
+    },
+    {
+      "shapeName": "6CubeCircle",
+      "shapeColor": 5
+    },
+    {
+      "shapeName": "6CubeFlower",
+      "shapeColor": 4
+    },
+    {
+      "shapeName": "6CubeSpiral",
+      "shapeColor": 5
+    }
+  ],
+  "shapes_1_2": true,
+  "shapes_3": true,
+  "shapes_4": true,
+  "shapes_5": true,
+  "shapes_6": true,
+  "randomSeed": 1010,
+  "solution": [
+    {
+      "shapeName": "5CubeCross",
+      "shapeColor": 2,
+      "position": [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [2, 1],
+        [3, 1]
+      ]
+    },
+    {
+      "shapeName": "4CubeTShape",
+      "shapeColor": 1,
+      "position": [
+        [0, 2],
+        [1, 2],
+        [2, 2],
+        [1, 3]
+      ]
+    },
+    {
+      "shapeName": "4CubeSquare",
+      "shapeColor": 2,
+      "position": [
+        [4, 0],
+        [4, 1],
+        [5, 0],
+        [5, 1]
+      ]
+    },
+    {
+      "shapeName": "4CubeLShape",
+      "shapeColor": 0,
+      "position": [
+        [0, 4],
+        [1, 4],
+        [2, 4],
+        [3, 4]
+      ]
+    },
+    {
+      "shapeName": "2CubeHor",
+      "shapeColor": 1,
+      "position": [
+        [3, 0],
+        [3, 1]
+      ]
+    },
+    {
+      "shapeName": "2CubeVer",
+      "shapeColor": 2,
+      "position": [
+        [4, 0],
+        [5, 0]
+      ]
+    },
+    {
+      "shapeName": "3CubeLine",
+      "shapeColor": 1,
+      "position": [
+        [4, 1],
+        [4, 2],
+        [4, 3]
+      ]
+    },
+    {
+      "shapeName": "3CubeL",
+      "shapeColor": 0,
+      "position": [
+        [5, 1],
+        [5, 2],
+        [6, 2]
+      ]
+    },
+    {
+      "shapeName": "5CubeLongHor",
+      "shapeColor": 3,
+      "position": [
+        [2, 0],
+        [2, 1],
+        [2, 2],
+        [2, 3],
+        [2, 4]
+      ]
+    },
+    {
+      "shapeName": "4Cube_Climb_hor_Right",
+      "shapeColor": 2,
+      "position": [
+        [3, 3],
+        [3, 4],
+        [3, 5],
+        [4, 4]
+      ]
+    },
+    {
+      "shapeName": "5CubeLShape",
+      "shapeColor": 1,
+      "position": [
+        [4, 5],
+        [5, 5],
+        [6, 5],
+        [6, 4],
+        [6, 3]
+      ]
+    },
+    {
+      "shapeName": "5CubeSquare",
+      "shapeColor": 4,
+      "position": [
+        [5, 3],
+        [5, 4],
+        [6, 3],
+        [6, 4]
+      ]
+    },
+    {
+      "shapeName": "5CubeDiamond",
+      "shapeColor": 3,
+      "position": [
+        [6, 0],
+        [6, 1],
+        [6, 2],
+        [5, 2],
+        [5, 3]
+      ]
+    },
+    {
+      "shapeName": "5CubeLongVer",
+      "shapeColor": 4,
+      "position": [
+        [4, 6],
+        [5, 6],
+        [6, 6],
+        [7, 6],
+        [8, 6],
+        [9, 6],
+        [10, 6]
+      ]
+    },
+    {
+      "shapeName": "5CubeZShape",
+      "shapeColor": 5,
+      "position": [
+        [7, 0],
+        [7, 1],
+        [8, 1],
+        [8, 2],
+        [9, 2],
+        [9, 3],
+        [10, 3]
+      ]
+    },
+    {
+      "shapeName": "5CubeHexagon",
+      "shapeColor": 5,
+      "position": [
+        [7, 4],
+        [8, 4],
+        [9, 4],
+        [10, 4],
+        [10, 5],
+        [10, 6],
+        [9, 5]
+      ]
+    },
+    {
+      "shapeName": "6CubeStar",
+      "shapeColor": 4,
+      "position": [
+        [1, 5],
+        [2, 5],
+        [3, 5],
+        [4, 5],
+        [5, 5],
+        [6, 5]
+      ]
+    },
+    {
+      "shapeName": "6CubeCircle",
+      "shapeColor": 5,
+      "position": [
+        [1, 6],
+        [2, 6],
+        [3, 6],
+        [4, 6],
+        [5, 6],
+        [6, 6]
+      ]
+    },
+    {
+      "shapeName": "6CubeFlower",
+      "shapeColor": 4,
+      "position": [
+        [7, 2],
+        [7, 3],
+        [7, 4],
+        [8, 2],
+        [8, 3],
+        [8, 4]
+      ]
+    },
+    {
+      "shapeName": "6CubeSpiral",
+      "shapeColor": 5,
+      "position": [
+        [7, 5],
+        [8, 5],
+        [9, 5],
+        [10, 5],
+        [10, 6],
+        [9, 6]
+      ]
+    }
+  ]
+}

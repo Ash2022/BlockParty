@@ -1,0 +1,28 @@
+{
+      "level": "2",
+      "cols": 4,
+      "rows": 3,
+      "peopleQueues": [
+        [1, 0, 0, 0],
+        [0, 1, 1, 1]
+      ],
+      "shapesLines": [
+        // 12 shapes, only up to 3-cube
+        { "shapeName": "3CubeHor", "shapeColor": 0 },
+        { "shapeName": "2CubeVer", "shapeColor": 1 },
+        { "shapeName": "3SmallL", "shapeColor": 0 },
+
+        { "shapeName": "2CubeVer", "shapeColor": 1 },
+        { "shapeName": "3CubeHor",    "shapeColor": 0 },
+        { "shapeName": "2CubeHor", "shapeColor": 1 },
+
+        { "shapeName": "3SmallL",  "shapeColor": 0 },
+        { "shapeName": "2CubeVer", "shapeColor": 1 },
+        { "shapeName": "3CubeHor", "shapeColor": 0 }
+      ],
+      "shapes_1_2": true,
+      "shapes_3": true,
+      "shapes_4": false,
+      "shapes_5": false,
+      "randomSeed": 3002
+    }

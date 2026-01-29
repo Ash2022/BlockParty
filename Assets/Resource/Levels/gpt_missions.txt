@@ -1,0 +1,1449 @@
+i have a unity game - the game is a mix between block tetris and queue mechanics.
+you have a grid, sized 3*3 to 9*9 - when game starts you get 3 tetris shapes color coded and 
+you place them on the board - completing a row or column removes the row or column from the grid.
+in addition there is 1 or more queue of people - they are color coded same like the shapes.
+the people at the top of the queue can walk to the tetris board and help the shapes complete 
+a row or column, the people walk on their own and only walk if they can help complete a row
+or a column, so they dont comlete empty rows or column - only assisting the shapes.
+
+this is the main class of the game 
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
+using TMPro;
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance;
+
+    [SerializeField] ShapeStorage _shapeStorage;
+    [SerializeField] Grid _gameGrid;
+    [SerializeField] Lines _queueLines;
+
+    [SerializeField]ModelManager _modelManager;
+
+    [SerializeField] GameObject endButton;
+    [SerializeField] TMP_Text buttonCaption;
+
+    [SerializeField] GameObject _shapePrefab;
+    [SerializeField]ShapeData _shapeData;
+
+
+    int[,] gameBoard;
+
+    int currLevelIndex = 0;
+    int shapeCompeltedCounter = 0;
+    bool levelComplete = false;
+    public bool lockDrag = false;
+
+    LevelData currLevelData;
+    public int[,] GameBoard { get => gameBoard; set => gameBoard = value; }
+
+    private void Awake()
+    {
+         Instance = this;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //_gameGrid.CreateGrid(4, 4);
+
+        
+
+        /*
+        GameObject shape = Instantiate(_shapePrefab, transform);
+        ShapeView shapeView = shape.GetComponent<ShapeView>();
+        shapeView.BuildShape(_shapeData,1);
+        */
+        _modelManager.BuildLevels();
+        _shapeStorage.InitStorageParams();
+
+        //build all levels from scene data
+
+            
+
+        BuildLevel(currLevelIndex);
+    }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.W))
+            GameOver(true);
+            /*
+        if (Input.GetKeyDown(KeyCode.O))
+            
+
+        if (Input.GetKeyDown(KeyCode.M))
+            */
+
+    }
+
+    private void BuildLevel(int levelIndex)
+    {
+        currLevelData = _modelManager.levelsData[currLevelIndex];
+
+        gameBoard = new int[currLevelData.Rows, currLevelData.Columns];
+
+        for (int i = 0; i < currLevelData.Rows; i++)
+        {
+            for (int j = 0; j < currLevelData.Columns; j++)
+                gameBoard[i, j] = -1;
+        }
+
+        //init grid
+        _gameGrid.CreateGrid(currLevelData.Rows, currLevelData.Columns);
+
+        List<List<int>> linesModelCopy = new List<List<int>>();
+
+        List<int> numColorsInQueue = new List<int>();
+
+        for (int i = 0; i < currLevelData.PeopleQueues.Count; i++)
+        {
+            List<int> singleLine = new List<int>();
+
+            for (int j = 0; j < currLevelData.PeopleQueues[i].Count; j++)
+            {
+                int personColorValue = currLevelData.PeopleQueues[i][j];
+
+                singleLine.Add(personColorValue);
+
+                if (!numColorsInQueue.Contains(personColorValue))
+                    numColorsInQueue.Add(personColorValue);
+            }
+
+            linesModelCopy.Add(singleLine);
+            
+        }
+
+        //count how many colors are in the lines 
+
+        currLevelData.NumberOfColors = numColorsInQueue.Count;
+
+        //init lines
+        _queueLines.BuildLines(linesModelCopy, _gameGrid, numColorsInQueue.Count);
+        //init storage
+
+        shapeCompeltedCounter = 0;
+
+        List<ShapeInfo> shapeInfo = new List<ShapeInfo>();
+
+        shapeInfo = currLevelData.ShapesLines.GetRange(0, 3);//take first 3 shapes
+
+        _shapeStorage.GenerateNewShapes(shapeInfo);
+        //start playing
+
+    }
+
+    
+
+    public void RequestNewShapes()
+    {
+        
+        shapeCompeltedCounter++;
+        List<ShapeInfo> shapeInfo = new List<ShapeInfo>();
+
+        if(currLevelData.ShapesLines.Count >= (shapeCompeltedCounter+1)*3)
+        {
+            shapeInfo = currLevelData.ShapesLines.GetRange(shapeCompeltedCounter*3, 3);
+            _shapeStorage.GenerateNewShapes(shapeInfo);
+        }
+        else
+        {
+            //no more defained shapes - take random ones instead
+
+            bool[] shapesToUse = new bool[4];
+            shapesToUse[0] = currLevelData.Shapes1And2;
+            shapesToUse[1] = currLevelData.Shapes3;
+            shapesToUse[2] = currLevelData.Shapes4;
+            shapesToUse[3] = currLevelData.Shapes5;
+
+            _shapeStorage.GenerateRandomShapes(shapesToUse, currLevelData.NumberOfColors, currLevelData.RandomSeed);
+        }
+    }
+
+  
+
+    public void GameOver(bool allLinesEmpty)
+    {
+        levelComplete= allLinesEmpty;
+        buttonCaption.text = levelComplete ? "Next" : "Try Again";
+        endButton.SetActive(true);
+    }
+
+    public void NextButtonClicked()
+    {
+        endButton.SetActive(false);
+         
+        if (levelComplete)
+            currLevelIndex++;
+
+        if(currLevelIndex == ModelManager.Instance.levelsData.Count)
+            currLevelIndex = 0;
+
+        BuildLevel(currLevelIndex);
+    }
+
+    internal int GetNumValidAttemptsToPosition()
+    {
+        int counter = 0;
+        foreach (GridSquareView gridSquareView in _gameGrid.GridSquareViews)
+            if (gridSquareView.ValidAttempt)
+                counter++;
+
+        return counter;
+    }
+
+    public void PositionCurrentShape(ShapeView shape, int colorIndex)
+    {
+        foreach (GridSquareView gridSquareView in _gameGrid.GridSquareViews)
+            if (gridSquareView.ValidAttempt)
+            {
+                gridSquareView.SetToFull(colorIndex);
+                GameBoard[gridSquareView.row, gridSquareView.col] = colorIndex;
+            }
+
+        bool shapesListEmpty = _shapeStorage.ShapeWasPositioned(shape);
+
+        PostShapePositionedFlow(shapesListEmpty);
+
+       
+    }
+
+    private async void PostShapePositionedFlow(bool shapeListEmpty)
+    {
+        //check line completions
+        RemoveCompletedLines();
+        //check line completion with people assist
+
+        bool personAssist = true;
+
+        lockDrag = true;
+
+        while (personAssist)
+        {
+            personAssist = await CheckPotentialLines();
+
+            _queueLines.OptemizeLine();
+
+        }
+
+        lockDrag = false;
+
+        if (shapeListEmpty)
+            RequestNewShapes();
+
+        //check game over complete or fail
+
+
+        bool allLinesEmpty = _queueLines.AllLinesEmpty();
+
+        if (allLinesEmpty)
+            Debug.Log("GameOver - WIN");
+
+        bool noMoreMoves = IsNoMoreMoves();
+
+        if (noMoreMoves)
+            Debug.Log("GameOver - NO MORE MOVES");
+
+
+        if (allLinesEmpty || noMoreMoves)
+        {
+            //gameOver = true;
+            //MenuClicked();
+
+            //_infoText.text = allLinesEmpty ? "LevelComplete" : "LevelFailed";
+
+            GameManager.Instance.GameOver(allLinesEmpty);
+        }
+    }
+
+
+    private async Task<bool> CheckPotentialLines()
+    {
+        Debug.Log("Checking potentialLines");
+
+        int[] currentLineTopByIndex = _queueLines.GetQueueTop();
+
+        //the array contains the amount of each color (based on color index in the array) 
+
+        //for each entry in the array - if the entry is bigger than 0 - see if there is a row that can be completed with this help
+
+        for (int i = 0; i < currentLineTopByIndex.Length; i++)
+        {
+            if (currentLineTopByIndex[i] > 0)
+            {
+                List<Vector2Int> resultingIndexes = CheckLineCompletionWithHelp(i, currentLineTopByIndex[i]);
+
+                int totalPeopleToMove = resultingIndexes.Count;
+
+                if (resultingIndexes.Count > 0)
+                {
+                    for (int j = 0; j < resultingIndexes.Count; j++)
+                    {
+                        _gameGrid.GridSquareViews[resultingIndexes[j].x, resultingIndexes[j].y].SetToFull(i);
+                        gameBoard[resultingIndexes[j].x, resultingIndexes[j].y] = i;
+
+                        //_gridSquareViews[resultingIndexes[j]].ActivateSquere(i);
+
+                        //we have a match - need to pick person of the i color and move to the first index
+                        _queueLines.MoveColorPersonToIndex(i, resultingIndexes[j], (person) =>
+                        {
+                            //move completed
+                            totalPeopleToMove--;
+
+                            Destroy(person);                            
+
+                            if (totalPeopleToMove == 0)
+                            {
+                                Debug.Log("Move Complete");
+
+                                //clear the line on the board
+                                RemoveCompletedLines();
+                            }
+                        });
+
+                    }
+
+                    await Task.Delay(1000);
+
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
+
+    public void RemoveCompletedLines()
+    {
+        List<int[]> lines = new List<int[]>();
+
+        List<int> completedRowIndexese = new List<int>();
+
+        //check rows
+        for (int row = 0; row < currLevelData.Rows; row++)
+        {
+            bool rowCompleted = true;
+            int rowColorIndex = gameBoard[row, 0];
+
+            if(rowColorIndex !=-1)//empty
+            {
+                for (int col = 0;col<currLevelData.Columns;col++)
+                {
+                    if (gameBoard[row,col] != rowColorIndex)
+                        rowCompleted = false;
+                }
+            }
+            else
+                rowCompleted = false;
+
+            if (rowCompleted)
+                completedRowIndexese.Add(row);
+
+        }
+
+        for (int i = 0; i < completedRowIndexese.Count; i++)
+        {
+            for (int col = 0; col < currLevelData.Columns; col++)
+            {
+                int rowIndex = completedRowIndexese[i];
+
+                gameBoard[rowIndex, col] = -1;
+                _gameGrid.GridSquareViews[rowIndex, col].ClearSquere();
+                
+
+            }
+        }
+        lines = new List<int[]>();
+
+        completedRowIndexese = new List<int>();
+
+        //check cols
+        for (int col = 0; col < currLevelData.Columns; col++)
+        {
+            bool colCompleted = true;
+            int colColorIndex = gameBoard[0, col];
+
+            if (colColorIndex != -1)//empty
+            {
+                for (int row= 0; row < currLevelData.Rows; row++)
+                {
+                    if (gameBoard[row, col] != colColorIndex)
+                        colCompleted = false;
+                }
+            }
+            else
+                colCompleted = false;
+
+            if (colCompleted)
+                completedRowIndexese.Add(col);
+
+        }
+
+        for (int i = 0; i < completedRowIndexese.Count; i++)
+        {
+            for (int row = 0; row < currLevelData.Rows; row++)
+            {
+                int colIndex = completedRowIndexese[i];
+
+                gameBoard[row, colIndex] = -1;
+                _gameGrid.GridSquareViews[row, colIndex].ClearSquere();
+            }
+        }
+        return;
+
+    }
+    
+    private List<Vector2Int> CheckLineCompletionWithHelp(int colorIndex, int _amountOfColor)
+    {
+        List<Vector2Int> potentialIndexes = new List<Vector2Int>();
+
+        int amountOfColor = Math.Min(currLevelData.Columns - 1, _amountOfColor);
+
+        //check rows
+        for (int row = 0; row < currLevelData.Rows; row++)
+        {
+            potentialIndexes.Clear();
+            int rowSqueresMatchingCondition = 0;
+            int rowColorIndex = colorIndex;
+            bool rowValid = true;
+
+            for (int col = 0; col < currLevelData.Columns; col++)
+            {
+                int squereColorValue = gameBoard[row,col];
+
+                //the row has at least 1 color that doesnt match
+                if (squereColorValue != -1 && squereColorValue != rowColorIndex)
+                    rowValid = false;
+
+                if (squereColorValue == rowColorIndex)
+                    rowSqueresMatchingCondition++;
+
+                //empty - add to list - maybe we can complete it
+                if (squereColorValue == -1)
+                    potentialIndexes.Add(new Vector2Int(row,col));
+
+
+            }
+
+            //row has 1 color or empty spaces
+            if (rowValid)
+            {
+                //check if the amount i have is enough to complete the row
+                if (amountOfColor + rowSqueresMatchingCondition >= currLevelData.Columns)
+                {
+                    //fix the list of potential indexes to only add the minimal amount needed
+
+                    while (potentialIndexes.Count + rowSqueresMatchingCondition > currLevelData.Columns)
+                    {
+                        potentialIndexes.RemoveAt(0);
+                    }
+
+                    return potentialIndexes;
+                }
+
+            }
+        }
+
+        //if we got here - no valid rows were found
+
+        potentialIndexes.Clear();
+
+        amountOfColor = Math.Min(currLevelData.Rows - 1, _amountOfColor);
+
+        //check cols
+        for (int col = 0; col < currLevelData.Columns; col++)
+        {
+            potentialIndexes.Clear();
+            int rowSqueresMatchingCondition = 0;
+            int colColorIndex = colorIndex;
+            bool colValid = true;
+
+            for (int row = 0; row < currLevelData.Rows; row++)
+            {
+                int squereColorValue = gameBoard[row,col];
+
+                //the row has at least 1 color that doesnt match
+                if (squereColorValue != -1 && squereColorValue != colColorIndex)
+                    colValid = false;
+
+                if (squereColorValue == colColorIndex)
+                    rowSqueresMatchingCondition++;
+
+                //empty - add to list - maybe we can complete it
+                if (squereColorValue == -1)
+                    potentialIndexes.Add(new Vector2Int(row,col));
+            }
+
+            //row has 1 color or empty spaces
+            if (colValid)
+            {
+                //check if the amount i have is enough to complete the row
+                if (amountOfColor + rowSqueresMatchingCondition >= currLevelData.Rows)
+                {
+                    //fix the list of potential indexes to only add the minimal amount needed
+
+                    while (potentialIndexes.Count + rowSqueresMatchingCondition > currLevelData.Rows)
+                    {
+                        potentialIndexes.RemoveAt(0);
+                    }
+
+                    return potentialIndexes;
+                }
+
+            }
+        }
+
+        potentialIndexes.Clear();
+        return potentialIndexes;
+    }
+
+    private bool IsNoMoreMoves()
+    {
+        int numberOfShapesInWaitingArea = 0;
+        int numberOfShapesThatCantBePlaced = 0;
+
+        //need to loop over all the active shapes and see if none of them can fit anywhere
+        foreach (ShapeView shape in _shapeStorage.shapeList)
+        {            
+            bool foundPositionForShape = false;
+
+            numberOfShapesInWaitingArea++;
+
+            for (int row = 0; row < currLevelData.Rows; row++)
+            {
+                for (int col = 0;col<currLevelData.Columns; col++)
+                {
+                    if (foundPositionForShape == false)
+                    {
+                        List<Vector2Int> shapesPositions = shape.GetShapeRelativeGridPositions();
+
+                        bool shapeCanBePlacedInThisIndex = true;
+
+                        //check if all the shape positions can be placed
+
+                        //convert the vector positions to the array index
+
+                        for (int j = 0; j < shapesPositions.Count; j++)
+                        {
+                            Vector2Int combinedPosition = new Vector2Int(row + shapesPositions[j].x, col + shapesPositions[j].y);
+
+                            bool indexInGrid = true;
+
+                            if (combinedPosition.x < 0 || combinedPosition.x > currLevelData.Rows-1)
+                                indexInGrid = false;
+
+                            if (combinedPosition.y < 0 || combinedPosition.y > currLevelData.Columns - 1)
+                                indexInGrid = false;
+
+                            if (indexInGrid == false || gameBoard[combinedPosition.x,combinedPosition.y] != -1)
+                                shapeCanBePlacedInThisIndex = false;
+                            
+                        }
+
+                        if (shapeCanBePlacedInThisIndex)
+                        {
+                            //found a valid place for the shape
+                            foundPositionForShape = true;
+                        }
+                    }
+                }
+            }
+
+
+            if (foundPositionForShape == false)
+                numberOfShapesThatCantBePlaced++;
+            
+        }
+
+        return numberOfShapesInWaitingArea == numberOfShapesThatCantBePlaced;
+    }
+}
+
+
+this is the DB of the shapes, each shape defines a small board and indicates with 01 as full block and 00 as empty
+
+  m_Name: 5Cube_Cross
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 3
+  name: 5Cube_Cross
+  board:
+  - column: 000100
+  - column: 010101
+  - column: 000100
+  
+  
+  
+    m_Name: 5Cube_CubeWPointDown
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 5Cube_CubeWPointDown
+  board:
+  - column: 0101
+  - column: 0101
+  - column: 0001
+
+
+  m_Name: 5Cube_CubeWPointLeft
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 5Cube_CubeWPointLeft
+  board:
+  - column: 010101
+  - column: 000101
+  
+  
+    m_Name: 5Cube_CubeWPointRight
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 5Cube_CubeWPointRight
+  board:
+  - column: 010101
+  - column: 010100
+  
+    m_Name: 5Cube_CubeWPointUp
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 5Cube_CubeWPointUp
+  board:
+  - column: 0001
+  - column: 0101
+  - column: 0101
+
+  m_Name: 5Cube_HoleDown
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 5Cube_HoleDown
+  board:
+  - column: 010101
+  - column: 010001
+
+  m_Name: 5Cube_HoleLeft
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 5Cube_HoleLeft
+  board:
+  - column: 0101
+  - column: 0001
+  - column: 0101
+  
+    m_Name: 5Cube_HoleRight
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 5Cube_HoleRight
+  board:
+  - column: 0101
+  - column: 0100
+  - column: 0101
+  
+    m_Name: 5Cube_HoleUp
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 5Cube_HoleUp
+  board:
+  - column: 010001
+  - column: 010101
+
+  m_Name: 5Cube_LongVer
+  m_EditorClassIdentifier: 
+  columns: 1
+  rows: 5
+  name: 5Cube_LongVer
+  board:
+  - column: 01
+  - column: 01
+  - column: 01
+  - column: 01
+  - column: 01
+
+
+  m_Name: 5Cube_LongHor
+  m_EditorClassIdentifier: 
+  columns: 1
+  rows: 5
+  name: 5Cube_LongHor
+  board:
+  - column: 01
+  - column: 01
+  - column: 01
+  - column: 01
+  - column: 01
+  
+    m_Name: 5Cube_T
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 3
+  name: 5Cube_T
+  board:
+  - column: 010101
+  - column: 000100
+  - column: 000100
+  
+  
+    m_Name: 4Cube_Climb_hor_Left
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cube_Climb_hor_Left
+  board:
+  - column: 010100
+  - column: 000101
+  
+    m_Name: 4Cube_Climb_hor_Right
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cube_Climb_hor_Right
+  board:
+  - column: 000101
+  - column: 010100
+  
+    m_Name: 4Cube_Climb_ver_Left
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cube_Climb_ver_Left
+  board:
+  - column: 0100
+  - column: 0101
+  - column: 0001
+  
+    m_Name: 4Cube_Climb_ver_Right
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cube_Climb_ver_Right
+  board:
+  - column: 0001
+  - column: 0101
+  - column: 0100
+  
+    m_Name: 4Cube_Cube
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 2
+  name: 4Cube_Cube
+  board:
+  - column: 0101
+  - column: 0101
+  
+    m_Name: 4Cube_long_hor
+  m_EditorClassIdentifier: 
+  columns: 4
+  rows: 1
+  name: 4Cube_long_hor
+  board:
+  - column: 01010101
+  
+    m_Name: 4Cube_long_ver
+  m_EditorClassIdentifier: 
+  columns: 1
+  rows: 4
+  name: 4Cube_long_ver
+  board:
+  - column: 01
+  - column: 01
+  - column: 01
+  - column: 01
+
+
+  m_Name: 4Cube_LShape
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cube_LShape
+  board:
+  - column: 0100
+  - column: 0100
+  - column: 0101
+  
+    m_Name: 4Cube_LShape_Flip_Hor
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cube_LShape_Flip_Hor
+  board:
+  - column: 0001
+  - column: 0001
+  - column: 0101
+  
+    m_Name: 4Cube_LShape_Flip_HorVer
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cube_LShape_Flip_HorVer
+  board:
+  - column: 0101
+  - column: 0001
+  - column: 0001
+  
+    m_Name: 4Cube_LShape_Flip_Ver
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cube_LShape_Flip_Ver
+  board:
+  - column: 0101
+  - column: 0100
+  - column: 0100
+  
+    m_Name: 4Cube_SideL
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cube_SideL
+  board:
+  - column: 010000
+  - column: 010101
+  
+    m_Name: 4Cube_SideL_FlipHor
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cube_SideL_FlipHor
+  board:
+  - column: 000001
+  - column: 010101
+  
+    m_Name: 4Cube_SideL_FlipVer
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cube_SideL_FlipVer
+  board:
+  - column: 010101
+  - column: 000001
+  
+    m_Name: 4Cube_SideL_FlipVerHor
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cube_SideL_FlipVerHor
+  board:
+  - column: 010101
+  - column: 010000
+
+  m_Name: 4Cubes_HalfCross_Down
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cubes_HalfCross_Down
+  board:
+  - column: 010101
+  - column: 000100
+  
+    m_Name: 4Cubes_HalfCross_Left
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cubes_HalfCross_Left
+  board:
+  - column: 0001
+  - column: 0101
+  - column: 0001
+
+  m_Name: 4Cubes_HalfCross_Right
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 3
+  name: 4Cubes_HalfCross_Right
+  board:
+  - column: 0100
+  - column: 0101
+  - column: 0100
+
+  m_Name: 4Cubes_HalfCross_Up
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 2
+  name: 4Cubes_HalfCross_Up
+  board:
+  - column: 000100
+  - column: 010101
+
+  m_Name: 3CubeHor
+  m_EditorClassIdentifier: 
+  columns: 3
+  rows: 1
+  name: 3CubeHor
+  board:
+  - column: 010101
+  
+    m_Name: 3CubeVer
+  m_EditorClassIdentifier: 
+  columns: 1
+  rows: 3
+  name: 3CubeVer
+  board:
+  - column: 01
+  - column: 01
+  - column: 01
+  
+    m_Name: 3SmallL
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 2
+  name: 3SmallL
+  board:
+  - column: 0100
+  - column: 0101
+
+  m_Name: 3SmallL_Flip_Hor
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 2
+  name: 3SmallL_Flip_Hor
+  board:
+  - column: 0001
+  - column: 0101
+  
+    m_Name: 3SmallL_Flip_Hor_Ver
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 2
+  name: 3SmallL_Flip_Hor_Ver
+  board:
+  - column: 0101
+  - column: 0001
+  
+    m_Name: 3SmallL_Flip_Ver
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 2
+  name: 3SmallL_Flip_Ver
+  board:
+  - column: 0101
+  - column: 0100
+  
+    m_Name: 1Cube
+  m_EditorClassIdentifier: 
+  columns: 1
+  rows: 1
+  name: 1Cube
+  board:
+  - column: 01
+  
+    m_Name: 2CubeHor
+  m_EditorClassIdentifier: 
+  columns: 2
+  rows: 1
+  name: 2CubeHor
+  board:
+  - column: 0101
+  
+    m_Name: 2CubeVer
+  m_EditorClassIdentifier: 
+  columns: 1
+  rows: 2
+  name: 2CubeVer
+  board:
+  - column: 01
+  - column: 01
+
+in Addition - this is what the levelData looks like:
+
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
+
+    /// <summary>
+    /// Represents the data structure of a game level as defined in the JSON.
+    /// </summary>
+    public class LevelData
+    {
+    public LevelData(int rows, int columns)
+    {
+        Rows = rows;
+        Columns = columns;
+    }
+
+    [JsonProperty("cols")]
+        public int Columns { get; set; }
+
+        [JsonProperty("rows")]
+        public int Rows { get; set; }
+
+        [JsonProperty("peopleQueues")]
+        public List<List<int>> PeopleQueues { get; set; } = new List<List<int>>();
+
+        [JsonProperty("shapesLines")]
+        public List<ShapeInfo> ShapesLines { get; set; } = new List<ShapeInfo>();
+
+        [JsonProperty("shapes_1_2")]
+        public bool Shapes1And2 { get; set; }
+
+        [JsonProperty("shapes_3")]
+        public bool Shapes3 { get; set; }
+
+        [JsonProperty("shapes_4")]
+        public bool Shapes4 { get; set; }
+
+        [JsonProperty("shapes_5")]
+        public bool Shapes5 { get; set; }
+
+        [JsonProperty("randomSeed")]
+        public int RandomSeed { get; set; }
+
+        [JsonIgnore]
+        public int NumberOfColors { get; set; }
+
+
+
+
+        /// <summary>
+        /// Parses a JSON string and converts it into a LevelData object.
+        /// </summary>
+        /// <param name="jsonString">The JSON string representing the level.</param>
+        /// <returns>An instance of LevelData populated with data from the JSON string.</returns>
+        public static LevelData ParseLevelDataFromString(string jsonString)
+        {
+            if (string.IsNullOrWhiteSpace(jsonString))
+            {
+                throw new ArgumentException("The JSON string provided is null or empty.", nameof(jsonString));
+            }
+
+            LevelData levelData;
+            try
+            {
+                levelData = JsonConvert.DeserializeObject<LevelData>(jsonString);
+            }
+            catch (JsonException ex)
+            {
+                throw new JsonException("Failed to deserialize the level JSON string. Please ensure the JSON format is correct.", ex);
+            }
+
+            if (levelData == null)
+            {
+                throw new Exception("Deserialization resulted in a null LevelData object.");
+            }
+
+            // Calculate NumberOfColors based on PeopleQueues
+            levelData.NumberOfColors = CalculateNumberOfColors(levelData.PeopleQueues);
+
+
+
+            return levelData;
+        }
+
+        /// <summary>
+        /// Calculates the number of distinct colors from the people queues.
+        /// </summary>
+        /// <param name="peopleQueues">The list of people queues.</param>
+        /// <returns>The count of distinct color indices.</returns>
+        private static int CalculateNumberOfColors(List<List<int>> peopleQueues)
+        {
+            HashSet<int> distinctColors = new HashSet<int>();
+
+            foreach (var queue in peopleQueues)
+            {
+                foreach (var color in queue)
+                {
+                    distinctColors.Add(color);
+                }
+            }
+
+            return distinctColors.Count;
+        }
+
+        
+    }
+
+
+
+
+    /// <summary>
+    /// Information about each shape line used in the level.
+    /// </summary>
+    public class ShapeInfo
+        {
+            [JsonProperty("shapeName")]
+            public string ShapeName { get; set; }
+
+            [JsonProperty("shapeColor")]
+            public int ShapeColor { get; set; }
+        }
+
+        
+
+and this is what a json level looks like:
+
+{
+  "level": "6",
+  "cols": 7,
+  "rows": 7,
+  "peopleQueues": [
+    [0, 1, 2, 1, 0, 1, 2],
+    [1, 0, 2, 0, 1, 0, 2],
+    [2, 1, 0, 2, 1, 2, 0],
+    [1, 2, 1, 0, 2, 1, 0],
+    [0, 1, 2, 1, 0, 1, 2],
+    [1, 0, 2, 0, 1, 0, 2],
+    [2, 1, 0, 2, 1, 2, 0]
+  ],
+  "shapesLines": [
+    {
+      "shapeName": "1Cube",
+      "shapeColor": 0
+    },
+    {
+      "shapeName": "2CubeHor",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "2CubeVer",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "3CubeLine",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "3CubeL",
+      "shapeColor": 0
+    },
+    {
+      "shapeName": "4CubeSquare",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "4CubeTShape",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "4CubeLShape",
+      "shapeColor": 0
+    },
+    {
+      "shapeName": "5CubeCross",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "4Cube_Climb_hor_Right",
+      "shapeColor": 2
+    },
+    {
+      "shapeName": "5CubeLongHor",
+      "shapeColor": 3
+    },
+    {
+      "shapeName": "5CubeLShape",
+      "shapeColor": 1
+    },
+    {
+      "shapeName": "5CubeSquare",
+      "shapeColor": 4
+    },
+    {
+      "shapeName": "5CubeDiamond",
+      "shapeColor": 3
+    },
+    {
+      "shapeName": "5CubeLongVer",
+      "shapeColor": 4
+    },
+    {
+      "shapeName": "5CubeZShape",
+      "shapeColor": 5
+    },
+    {
+      "shapeName": "5CubeHexagon",
+      "shapeColor": 5
+    }
+  ],
+  "shapes_1_2": true,
+  "shapes_3": true,
+  "shapes_4": true,
+  "shapes_5": true,
+  "randomSeed": 1007
+  
+}
+
+
+the objective of the game is to clear the queue of people by placing tetris shapes on the
+board that will make the people go to the board and help complete a line.
+you lose when you cannot place any more tetris shapes on the board.
+
+do you understand the game?
+
+
+
+
+i need your help with creating levels for the game and later with assessing their difficulty.
+
+levels range from 3*3 to 9*9 board size, it can have 1 to 6 queus, it can have 2 to 5 colors, in addition,
+you can have levels with simple shapes (1,2 or 3 squares) or more complex shapes.
+
+the main difficulty param is the number of people in the queues, cause they need to be cleared, second
+param is the number of queues, the more queues you have the easier it is to clear them, this is because 
+you have more people at the top of the line to be able to assist in completing a row or column.
+
+do you have enough knowledge about the game to generate valid levels in a difficulty of my choice?
+
+
+
+do you understand the queue mechanics?
+
+this is how the top of the queue is calculated:
+
+//returns an array saying for each color how many people in the line are avaialble
+public int[] GetQueueTop()
+{
+    int[] top = new int[numberOfColors];
+
+
+    //top[0] - how many people of color index 0 are  
+
+    for (int color = 0; color < numberOfColors; color++)
+    {
+        foreach (List<int> personInLine in currentLines)
+        {
+            bool colorChainBroken = false;
+
+            for (int i = 0; i < personInLine.Count; i++)
+            {
+                if (personInLine[i] == color && colorChainBroken == false)
+                    top[color]++;
+
+                if(personInLine[i] != color)
+                    colorChainBroken = true;
+            }
+        }
+    }
+
+    
+
+    return top;
+}
+
+and this is how its "optimized" after being cleared:
+
+internal void OptemizeLine()
+{
+    int totalPeopleLeftInAllLines = 0;
+    int numberOfEmptyLines = 0;
+
+    for (int i = 0; i < lineViews.Count; i++)
+    {
+        int peopleInLine = lineViews[i].GetNumberOfPeopleInLine();
+
+        if (peopleInLine == 0)
+            numberOfEmptyLines++;
+        else
+            totalPeopleLeftInAllLines += peopleInLine;
+
+    }
+
+    int totalNumberOfLines = lineViews.Count;
+
+    //3 - 2 
+    //while the total number of lines - number of empty lines = number of full lines
+    //if the number of full lines < numberOfPeopleInAllLines - we can improve and move the people to other lines
+
+    int emergencyEscape = 0;
+
+    while (totalNumberOfLines - numberOfEmptyLines < totalPeopleLeftInAllLines && numberOfEmptyLines>0 && emergencyEscape<100)
+    {
+        emergencyEscape++;
+
+        bool filledEmptyLine = false;
+        //find the first empty line - try to get a person from the next line to move to this line
+        for (int i = 0; i < lineViews.Count; i++)
+        {
+            if (lineViews[i].GetNumberOfPeopleInLine() == 0 && filledEmptyLine == false)
+            {
+                //try to get a person from other lines
+                if (i - 1 >= 0 && lineViews[i - 1].GetNumberOfPeopleInLine() > 1)//try to get from line left of me
+                {
+                        //found a line to take from
+                        GameObject person = lineViews[i - 1].RemoveSecondTopPersonFromLine();
+
+                        int personData = currentLines[i - 1][1];
+
+                        currentLines[i - 1].RemoveAt(1);
+
+                        currentLines[i].Add(personData);
+
+                        lineViews[i].AddPersonToLine(person);
+
+                        filledEmptyLine = true;
+                    
+                }
+                else if (i + 1 <= totalNumberOfLines - 1 && lineViews[i + 1].GetNumberOfPeopleInLine() > 1)
+                {
+                    
+                        //found a line to take from
+
+                        GameObject person = lineViews[i + 1].RemoveSecondTopPersonFromLine();
+
+                        int personData = currentLines[i + 1][1];
+
+                        currentLines[i + 1].RemoveAt(1);
+
+                        currentLines[i].Add(personData);
+
+
+                        lineViews[i].AddPersonToLine(person);
+
+                        filledEmptyLine = true;
+                    
+                }
+                else
+                {
+                    //loop over all the lines and take from the first one you find
+                    for (int j = 0; j < totalNumberOfLines; j++)
+                    {
+                        if (lineViews[j].GetNumberOfPeopleInLine() > 1)
+                        {
+                            //found a line to take from
+
+                            GameObject person = lineViews[j].RemoveSecondTopPersonFromLine();
+
+                            int personData = currentLines[j][1];
+
+                            currentLines[j].RemoveAt(1);
+
+                            currentLines[i].Add(personData);
+
+
+                            lineViews[i].AddPersonToLine(person);
+
+                            filledEmptyLine = true;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (filledEmptyLine)
+            Debug.Log("Line Was Optemized");
+
+        //check the status after moving to other lines
+        totalPeopleLeftInAllLines = 0;
+        numberOfEmptyLines = 0;
+
+        for (int i = 0; i < lineViews.Count; i++)
+        {
+            int peopleInLine = lineViews[i].GetNumberOfPeopleInLine();
+
+            if (peopleInLine == 0)
+                numberOfEmptyLines++;
+            else
+                totalPeopleLeftInAllLines += peopleInLine;
+
+        }
+
+
+    }
+}
+
+
+
+looks like you understand the game, now make for me 10 levels - they need to range from very easy to very hard.
+in the levels - make the shapes that you give the user different from each other.
+in each level make at least 3 times 3 shapes that are defined in the level (after that we get random ones).
+try to make the levels different, interesting and ascend in difficulty in a linear manner.
+please make every level on single file.
+
+please ask any questions you have before making levels - i only want you to make levels when 
+you clearly understand the game.
+
+
+1. yes, at the moment you are limited to the shapes i sent you in the DB - later we can add more shapes there.
+2. yes, shapes with color index 1 can be completed only by people with color index 1.
+3. this depends on the complexity you are able to have when designing a level, in general levels needs
+to be solveable - when you define all  the shapes you can confirm the level is 100% solvable.
+so the answer is no, they dont have to have exactly 9 shapes, it can be more - num shpaes must divide by 3.
+4. i dotn care.
+5. 10 separate json files.
+6. all queues start with the same number of people.
+7. this needs to vary throughout the levels, bigger shapes are harder to place and harder to complete lines with 
+so they fit better for harder levels
+8. i want both options, at the moment we are only making 10 levels -  but then we will exapnd it to bigger number
+so there is room for gradual change both in board size and also in other params.
+9. let's start with basic levels, verify they work well - and then we will also make special levels.
+
+
+ok, i will try these levels - meanwhile - can you try to think of a way to assess a levels difficulty but not 
+only based on the params you can set - but base on the actual level and the ways it can be played, 
+i know its hard cause levels can be played in infinite number of ways - so it needs to be some estimation
+rather then checking all the options.
+
+
+1. please send to me levels 7-10 again.
+2. can you add to each level the Heuristic Score as you described it.
+3. are you able to run the 20 simulations per level on your own to refine the diff scoring?
+
+
+level 3,4,5,6 might be impossible is very hard - do you understand that having more queues with less people in each queue makes the game
+a lot easier. 20 people in 10 2 people queue is very easy compared with 2 lines of 10 people each.
+
+
+levels are still not good enough.
+having more queues with less people in each queue makes the game
+a lot easier. 20 people in 10 2 people queue is very easy compared with 2 lines of 10 people each.
+levels are too hard, some of the levels seem impossible to solve.
+i dont like the levels that have queues that are single line of same color, it looks boring and its hard
+let's also add another method to read the levels, one that will take single file with many levels rather then multiple files.
+
+this is the method i have now to read single level - make a new one that accepts multiple levels in one file.
+
+/// <summary>
+/// Parses a JSON string and converts it into a LevelData object.
+/// </summary>
+/// <param name="jsonString">The JSON string representing the level.</param>
+/// <returns>An instance of LevelData populated with data from the JSON string.</returns>
+public static LevelData ParseLevelDataFromString(string jsonString)
+{
+    if (string.IsNullOrWhiteSpace(jsonString))
+    {
+        throw new ArgumentException("The JSON string provided is null or empty.", nameof(jsonString));
+    }
+
+    LevelData levelData;
+    try
+    {
+        levelData = JsonConvert.DeserializeObject<LevelData>(jsonString);
+    }
+    catch (JsonException ex)
+    {
+        throw new JsonException("Failed to deserialize the level JSON string. Please ensure the JSON format is correct.", ex);
+    }
+
+    if (levelData == null)
+    {
+        throw new Exception("Deserialization resulted in a null LevelData object.");
+    }
+
+    // Calculate NumberOfColors based on PeopleQueues
+    levelData.NumberOfColors = CalculateNumberOfColors(levelData.PeopleQueues);
+
+    return levelData;
+}
+
+and make me 10 new levels - they all need to be easier, they all need to look interesting.
+not have same shapes again and again, not have too many times queues that start with single color row of people.
+
+
+some more refinments:
+1. you have too many levels with single shape - we cannot play this card too often - out of 20 levels - you can use this 2-3 times.
+2. at the end of too many levels you are placing only 1_2 cubes and maybe 3 - this isnt good - you need to also add 4 more often
+3. also - make all the predefined shapes in the levels at least 12 (instead of 9) - this will help make the levels
+more unique cause you will have more control over the level (instead of random) 

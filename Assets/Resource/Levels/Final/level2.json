@@ -1,0 +1,23 @@
+{
+  "level": "2",
+  "cols": 4,
+  "rows": 4,
+  "peopleQueues": [
+    [1, 0, 0, 1,1,0],
+    [1, 1, 0, 1,0,0]
+  ],
+  "shapesLines": [
+    { "shapeName": "3SmallL_Flip_Hor_Ver",       "shapeColor": 0 },
+    { "shapeName": "3CubeVer",       "shapeColor": 0 },
+    { "shapeName": "2CubeVer",    "shapeColor": 1 },
+
+    { "shapeName": "4Cube_Climb_hor_Left",    "shapeColor": 1 },
+    { "shapeName": "3SmallL",    "shapeColor": 0 },
+    { "shapeName": "1Cube",     "shapeColor": 1 }
+  ],
+  "shapes_1_2": true,
+  "shapes_3": true,
+  "shapes_4": false,
+  "shapes_5": false,
+  "randomSeed": 20
+}

@@ -1,0 +1,29 @@
+{
+      "level": "10",
+      "cols": 6,
+      "rows": 7,
+      "peopleQueues": [
+        // 3 queues, 4 colors repeated in blocks
+        [0, 3, 1, 1, 0, 2, 3, 3],
+        [1, 0, 2, 2, 3, 3, 0, 0],
+        [2, 2, 3, 3, 1, 0, 1, 1]
+      ],
+      "shapesLines": [
+        { "shapeName": "4Cube_LShape_Flip_Hor","shapeColor": 0 },
+        { "shapeName": "3CubeHor",            "shapeColor": 1 },
+        { "shapeName": "4Cube_SideL_FlipVerHor",            "shapeColor": 2 },
+
+        { "shapeName": "4Cube_Cube",          "shapeColor": 3 },
+        { "shapeName": "5Cube_CubeWPointRight",             "shapeColor": 2 },
+        { "shapeName": "3SmallL",            "shapeColor": 1 },
+
+        { "shapeName": "4Cube_SideL_FlipVerHor","shapeColor": 1 },
+        { "shapeName": "3CubeVer",            "shapeColor": 0 },
+        { "shapeName": "3CubeHor",            "shapeColor": 3 }
+      ],
+      "shapes_1_2": true,
+      "shapes_3": true,
+      "shapes_4": true,
+      "shapes_5": false,
+      "randomSeed": 4210
+    }

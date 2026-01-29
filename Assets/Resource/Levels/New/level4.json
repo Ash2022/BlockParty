@@ -1,0 +1,27 @@
+{
+  "level": "4",
+  "cols": 6,
+  "rows": 6,
+  "peopleQueues": [
+    [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2],
+    [2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0]
+  ],
+  "shapesLines": [
+    { "shapeName": "4Cube_Cube",    "shapeColor": 0 },
+    { "shapeName": "3CubeHor",      "shapeColor": 1 },
+    { "shapeName": "2CubeVer",      "shapeColor": 2 },
+
+    { "shapeName": "4Cube_long_ver","shapeColor": 1 },
+    { "shapeName": "3SmallL_Flip_Hor", "shapeColor": 2 },
+    { "shapeName": "2CubeHor",      "shapeColor": 0 },
+
+    { "shapeName": "4Cube_LShape",  "shapeColor": 2 },
+    { "shapeName": "3CubeVer",      "shapeColor": 1 },
+    { "shapeName": "1Cube",         "shapeColor": 0 }
+  ],
+  "shapes_1_2": true,
+  "shapes_3": true,
+  "shapes_4": true,
+  "shapes_5": false,
+  "randomSeed": 40
+}
