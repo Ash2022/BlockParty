@@ -1,0 +1,11 @@
+framework module LongriverMax {
+  umbrella header "LongriverMax.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverMax.Swift {
+  header "LongriverMax-Swift.h"
+  requires objc
+}

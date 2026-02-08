@@ -1,0 +1,11 @@
+framework module LongriverSDK {
+  umbrella header "LongriverSDK.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverSDK.Swift {
+  header "LongriverSDK-Swift.h"
+  requires objc
+}

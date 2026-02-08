@@ -1,0 +1,11 @@
+framework module LongriverKeyChain {
+  umbrella header "LongriverKeyChain.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverKeyChain.Swift {
+  header "LongriverKeyChain-Swift.h"
+  requires objc
+}

@@ -1,0 +1,11 @@
+framework module LongriverFirebase {
+  umbrella header "LongriverFirebase.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverFirebase.Swift {
+  header "LongriverFirebase-Swift.h"
+  requires objc
+}

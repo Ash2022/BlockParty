@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dependencies>
+    <androidPackages>
+        <repositories>
+            <repository>https://mvn.bepicgames.com/repository/maven-releases/</repository>
+            <repository>https://android-sdk.is.com</repository>
+            <repository>https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea</repository>
+            <repository>https://artifact.bytedance.com/repository/pangle</repository>
+            <!-- <repository>https://anythink.jfrog.io/artifactory/android_sdk</repository> -->
+            <repository>https://sdk.tapjoy.com</repository>
+        </repositories>
+
+        <!-- ============================== -->
+        <androidPackage spec="com.longriversdk:LongriverBase:0.0.74" />
+        <androidPackage spec="com.longriversdk:LongriverMax:0.0.74" />
+        <!-- <androidPackage spec="com.longriversdk:LongriverAdmob:0.0.74" /> -->
+        <!-- for pub.adfly adapter-->
+        <!--<androidPackage spec="pub.adfly:adfly-sdk:0.10.4" />-->
+        <!--<androidPackage spec="pub.adfly:adapter-max:0.10.4" />-->
+
+        <androidPackage spec="com.longriversdk:LongriverAndroidSDK:0.0.74" />
+        <!-- choose Appsflyer or adjust  -->
+        <androidPackage spec="com.longriversdk:LongriverAdjust:0.0.74" />
+        <!--打开后可使用登录支付等内容-->
+        <!--include this dependency for login and payment-->
+        <androidPackage spec="com.longriversdk:LongriverUserPayment:0.0.74" />
+        <!-- <androidPackage spec="com.longriversdk:LongriverGooglePlayLogin:0.0.74" /> -->
+        <!-- 打开后可使用FB登录和facebook的上报 -->
+        <!-- include this dpendency for facebook login and facebook log upload -->
+        <!-- <androidPackage spec="com.longriversdk:LongriverFacebook:0.0.74" /> -->
+        <!-- 打开后可使用推送和firebase的上报 firebase在线参数  -->
+        <!-- include this dpendency for firebase push and firebase log  upload and firebase online config -->
+        <androidPackage spec="com.longriversdk:LongriverFirebase:0.0.74" />
+        <!-- 打开后可使用Bugly上报  -->
+        <!-- include this dpendency for Bugly crash upload -->
+        <!-- <androidPackage spec="com.longriversdk:LongriverBugly:0.0.74" /> -->
+    </androidPackages>
+    <iosPods>
+        <!-- ============================== -->
+        <!-- WaboIOSSDK -->
+        <!-- ============================== -->
+        <!-- Longriver 依赖 -->
+        <!-- <iosPod name="WaboCoreIOSSDK" minTargetSdk="11.0" version="0.0.74" /> -->
+        <!-- 需要广告请打开下面这个 -->
+        <!-- <iosPod name="WaboMaxIOSSDK" minTargetSdk="11.0" version="0.0.74" /> -->
+        <!-- 需要登录支付请打开下面这个 -->
+        <!-- <iosPod name="WaboLoginPurchaseIOSSDK" minTargetSdk="12.0" version="0.1.56" /> -->
+        <!-- 打开后可使用facebook登录和facebook的上报 -->
+        <!-- <iosPod name="WaboFacebookIOSSDK" minTargetSdk="12.0" version="0.1.56" /> -->
+        <!-- 打开后可使用推送和firebase的上报 firebase在线参数-->
+        <!-- <iosPod name="WaboFirebaseIOSSDK" minTargetSdk="12.0" version="0.1.56" /> -->
+        <!-- 打开后可使用Google 登录-->
+        <!-- <iosPod name="WaboGoogleIOSSDK" minTargetSdk="12.0" version="0.1.56" /> -->
+        <!-- ============================== -->
+        <!-- ============================== -->
+        <!-- ============================== -->
+        <!-- ============================== -->
+        <!-- ============================== -->
+        <!-- ReplaceIOSSDK -->
+        <!-- Important！！！ => When not specified, there is no need to open the following comment -->
+        <!-- Important！！！ => When not specified, there is no need to open the following comment -->
+        <!-- Important！！！ => When not specified, there is no need to open the following comment -->
+        <!-- Important！！！ => When not specified, there is no need to open the following comment -->
+        <!-- Important！！！ => When not specified, there is no need to open the following comment -->
+        <!-- ============================== -->
+        <!-- Adjust Dependencies -->
+
+        <iosPod name="Adjust" minTargetSdk="12.0" version="5.4.4" /> 
+
+        <!-- Aliyun Dependencies -->
+
+        <iosPod name="AliyunLogProducer" minTargetSdk="12.0" version="4.3.3" /> 
+
+        <!-- Matoma Dependencies -->
+        <!-- 
+        <iosPod name="MatomaIOSSDK" minTargetSdk="12.0" version="0.2.11" /> 
+        -->
+        <!-- Google UMP Dependencies -->
+
+        <iosPod name="GoogleUserMessagingPlatform" minTargetSdk="12.0" version="3.0.0" /> 
+
+        <!-- Reachability Dependencies -->
+
+        <iosPod name="ReachabilitySwift" minTargetSdk="12.0" version="5.2.3" /> 
+
+        <!-- MAX Dependencies -->
+
+        <iosPod name="AppLovinSDK" minTargetSdk="13.0" version="13.4.0" /> 
+
+        <!-- Admob Dependencies -->
+        <!-- 
+        <iosPod name="Google-Mobile-Ads-SDK" minTargetSdk="13.0" version="12.11.0" /> 
+        -->
+        <!-- ============================== -->
+        <!-- ============================== -->
+        <!-- Firebase & Google Login Dependencies -->
+
+        <iosPod name="GoogleUtilities" minTargetSdk="12.0" version="8.1.0" /> 
+
+        <!-- Firebase Dependencies -->
+
+        <iosPod name="Firebase" minTargetSdk="12.0" version="11.9.0" />
+        <iosPod name="FirebaseAnalytics" minTargetSdk="12.0" version="11.9.0" />
+        <iosPod name="FirebaseMessaging" minTargetSdk="12.0" version="11.9.0" />
+        <iosPod name="FirebaseRemoteConfig" minTargetSdk="12.0" version="11.9.0" />
+        <iosPod name="FirebaseCrashlytics" minTargetSdk="12.0" version="11.9.0" />
+
+        <!-- Facebook Dependencies -->
+        <!-- 
+        <iosPod name="FBSDKCoreKit" minTargetSdk="12.0" version="18.0.1" />
+        <iosPod name="FBSDKLoginKit" minTargetSdk="12.0" version="18.0.1" />
+        <iosPod name="FBSDKShareKit" minTargetSdk="12.0" version="18.0.1" />
+        -->
+        <!-- Google Login Dependencies -->
+        <!-- 
+        <iosPod name="GoogleSignIn" minTargetSdk="12.0" version="9.0.0" /> 
+        -->
+        <!-- Bugly Dependencies -->
+        <!-- 
+        <iosPod name="Bugly" minTargetSdk="12.0" version="2.5.91" /> 
+        -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- ============================== -->
+        <!-- MAX Sub hannel Ads -->
+        <!-- ============================== -->
+        <!-- <iosPod name="AppLovinMediationFyberAdapter" minTargetSdk="12.0" version="8.3.8.0" /> -->
+
+        <iosPod name="AppLovinMediationByteDanceAdapter" minTargetSdk="12.0" version="7.6.0.4.0" />
+        <iosPod name="AppLovinMediationFacebookAdapter" minTargetSdk="12.0" version="6.20.1.0" />
+        <iosPod name="AppLovinMediationIronSourceAdapter" minTargetSdk="12.0" version="8.11.0.0.0" />
+        <iosPod name="AppLovinMediationMintegralAdapter" minTargetSdk="12.0" version="7.7.9.0.0" />
+        <iosPod name="AppLovinMediationUnityAdsAdapter" minTargetSdk="12.0" version="4.16.1.0" />
+        <iosPod name="AppLovinMediationVungleAdapter" minTargetSdk="12.0" version="7.5.3.0" />
+        <iosPod name="AppLovinMediationGoogleAdManagerAdapter" minTargetSdk="12.0" version="12.11.0.0" />
+        <iosPod name="AppLovinMediationGoogleAdapter" minTargetSdk="12.0" version="12.11.0.0" />
+        <iosPod name="bigo-ads-max-adapter" minTargetSdk="12.0" version="4.9.3.0" />
+
+
+        <!-- ============================== -->
+        <!-- Admob Sub hannel Ads -->
+        <!-- ============================== -->
+        <!-- <iosPod name="GoogleMobileAdsMediationFyber" minTargetSdk="12.0" version="8.3.8.0" /> -->
+        <!--
+        <iosPod name="GoogleMobileAdsMediationMintegral" minTargetSdk="12.0" version="7.7.9.0" />
+        <iosPod name="GoogleMobileAdsMediationPangle" minTargetSdk="12.0" version="7.5.0.7.0" />
+        <iosPod name="GoogleMobileAdsMediationAppLovin" minTargetSdk="13.0" version="13.4.0.0" />
+        <iosPod name="GoogleMobileAdsMediationIronSource" minTargetSdk="12.0" version="8.11.0.0.0" />
+        <iosPod name="GoogleMobileAdsMediationVungle" minTargetSdk="12.0" version="7.5.3.0" />
+        <iosPod name="GoogleMobileAdsMediationFacebook" minTargetSdk="12.0" version="6.20.1.0" />
+        <iosPod name="GoogleMobileAdsMediationUnity" minTargetSdk="12.0" version="4.16.1.0" />
+        <iosPod name="bigo-ads-admob-adapter" minTargetSdk="12.0" version="4.9.3.0" />
+        -->
+	</iosPods>
+</dependencies>
+
+

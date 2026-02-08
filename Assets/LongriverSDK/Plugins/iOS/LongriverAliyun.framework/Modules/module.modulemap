@@ -1,0 +1,11 @@
+framework module LongriverAliyun {
+  umbrella header "LongriverAliyun.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverAliyun.Swift {
+  header "LongriverAliyun-Swift.h"
+  requires objc
+}

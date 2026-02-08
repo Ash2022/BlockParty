@@ -1,0 +1,11 @@
+framework module LongriverUnityBridge {
+  umbrella header "LongriverUnityBridge.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverUnityBridge.Swift {
+  header "LongriverUnityBridge-Swift.h"
+  requires objc
+}

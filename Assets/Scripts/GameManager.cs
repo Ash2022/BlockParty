@@ -1,4 +1,5 @@
 using DG.Tweening;
+using LongriverSDKNS;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -135,11 +136,18 @@ public class GameManager : MonoBehaviour
         _scoreTextY = _scoreText.gameObject.GetComponent<RectTransform>().localPosition.y;
         _addedScoreY = _addedScoreRect.localPosition.y;
 
+        LongriverSDK.instance.setInitSuccessDelegate(SuccesfullInit);
+
         //TinySauce.SubscribeOnInitFinishedEvent((param1,param2)=>
         //{
             BuildLevel(currLevelIndex);
         //});
 
+        
+    }
+
+    private void SuccesfullInit(InitSuccessResult result)
+    {
         
     }
 

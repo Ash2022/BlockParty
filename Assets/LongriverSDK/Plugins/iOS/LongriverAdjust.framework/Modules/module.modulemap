@@ -1,0 +1,11 @@
+framework module LongriverAdjust {
+  umbrella header "LongriverAdjust.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverAdjust.Swift {
+  header "LongriverAdjust-Swift.h"
+  requires objc
+}

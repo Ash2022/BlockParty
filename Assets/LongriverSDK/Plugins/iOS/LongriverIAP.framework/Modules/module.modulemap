@@ -1,0 +1,11 @@
+framework module LongriverIAP {
+  umbrella header "LongriverIAP.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverIAP.Swift {
+  header "LongriverIAP-Swift.h"
+  requires objc
+}

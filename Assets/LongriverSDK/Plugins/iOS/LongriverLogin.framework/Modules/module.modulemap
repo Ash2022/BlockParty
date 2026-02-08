@@ -1,0 +1,11 @@
+framework module LongriverLogin {
+  umbrella header "LongriverLogin.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverLogin.Swift {
+  header "LongriverLogin-Swift.h"
+  requires objc
+}

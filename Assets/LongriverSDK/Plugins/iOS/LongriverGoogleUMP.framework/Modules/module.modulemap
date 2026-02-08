@@ -1,0 +1,11 @@
+framework module LongriverGoogleUMP {
+  umbrella header "LongriverGoogleUMP.h"
+  export *
+
+  module * { export * }
+}
+
+module LongriverGoogleUMP.Swift {
+  header "LongriverGoogleUMP-Swift.h"
+  requires objc
+}
