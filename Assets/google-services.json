@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1010345424655",
+    "project_id": "blockparty-929d2",
+    "storage_bucket": "blockparty-929d2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010345424655:android:72e86fd9a42d887202707a",
+        "android_client_info": {
+          "package_name": "com.shini.blocktris"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfVoV4CdtzMUurcoAuu_wmLnGZouNGHGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
