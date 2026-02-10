@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static ComboEffectView;
 using static ShapesDB;
 
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]SimpleTutorialView _simpleTutorialView;
     [SerializeField]RectTransform canvas;
     [SerializeField] Texture2D _handTexture;
+    [SerializeField] CanvasScaler canvasScaler;
 
     List<Vector2Int> simulationResults;
     int[,] gameBoard;
@@ -107,14 +109,27 @@ public class GameManager : MonoBehaviour
         _gameState = GameStates.Loading;
     }
 
+    private async void Start() { await Init(); }
+
     // Start is called before the first frame update
-    void Start()
+    private async Task Init()
     {
 #if UNITY_EDITOR && false
         Cursor.SetCursor(_handTexture, Vector2.zero, CursorMode.ForceSoftware);
 #endif
         Application.targetFrameRate = 60;
         DOTween.SetTweensCapacity(500, 150);
+
+        float baselineAspect = 9f / 16f;
+        float baselineOrthoSize = 5f;
+        float targetAspect = Camera.main.aspect;
+        if (targetAspect < baselineAspect)
+            canvasScaler.matchWidthOrHeight = 0;
+        else
+            canvasScaler.matchWidthOrHeight = 1;
+
+
+            await Task.Delay(100);
 
         PlayerPrefs.DeleteAll();
 
